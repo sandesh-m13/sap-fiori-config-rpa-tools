@@ -1,0 +1,589 @@
+{
+  "Name": "PageAddToSpace",
+  "CreationDate": "2026-2-4",
+  "Commands": [
+   {
+      "Command": "store",
+      "Target": "https://_YOUR_WEB_DISPATHER_URL?sap-client=100&sap-language=EN",
+      "Value": "Fiori_Launchpad_URL",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "DNT_FIORI_PAGE_BUILD.",
+      "Value": "TR_Desc",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "--- Creating output file CSV and headers ---",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var d = new Date(); var iso = d.toISOString().slice(0,16); return iso.replace('T','_').replace(/-/g,'').replace(/:/g,'');",
+      "Value": "timestamp",
+      "Description": "Create timestamp YYYYMMDD_HHMM"
+    },
+    {
+      "Command": "store",
+      "Target": "pageaddtospace_results_${timestamp}.csv",
+      "Value": "outputFileName",
+      "Description": "Dynamic filename"
+    },
+    {
+      "Command": "echo",
+      "Target": "📁 Output file: ${outputFileName}",
+      "Value": "green",
+      "Description": "Show filename"
+    },
+    {
+      "Command": "store",
+      "Target": "Space ID",
+      "Value": "!csvLine",
+      "Description": "Header: Space ID"
+    },
+    {
+      "Command": "store",
+      "Target": "Page ID",
+      "Value": "!csvLine",
+      "Description": "Header: Page ID"
+    },
+    {
+      "Command": "store",
+      "Target": "Status",
+      "Value": "!csvLine",
+      "Description": "Header: Status"
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${outputFileName}",
+      "Value": "",
+      "Description": "Create output CSV with headers"
+    },
+    {
+      "Command": "comment",
+      "Target": "=== MAIN LOOP ===",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "",
+      "Value": "previousSpaceId",
+      "Description": "Track previous Space ID"
+    },
+    {
+      "Command": "csvRead",
+      "Target": "PageAddToSpace.csv",
+      "Value": "",
+      "Description": "Load CSV file"
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number(1)",
+      "Value": "currentRow",
+      "Description": "Load CSV file"
+    },
+    {
+      "Command": "pause",
+      "Target": "",
+      "Value": "100",
+      "Description": "Load CSV file"
+    },
+    {
+      "Command": "while",
+      "Target": "${currentRow} <= ${!CSVREADMAXROW}",
+      "Value": "currentRow",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${currentRow}",
+      "Value": "!CSVREADLINENUMBER",
+      "Description": ""
+    },
+    {
+      "Command": "csvRead",
+      "Target": "PageAddToSpace.csv",
+      "Value": "",
+      "Description": "Read current row"
+    },
+    {
+      "Command": "store",
+      "Target": "${!col1}",
+      "Value": "currentSpaceId",
+      "Description": "Store Space ID"
+    },
+    {
+      "Command": "store",
+      "Target": "${!col2}",
+      "Value": "currentPageId",
+      "Description": "Store Page ID"
+    },
+    {
+      "Command": "comment",
+      "Target": "=== SPACE ID CHANGE DETECTION ===",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "if",
+      "Target": "${currentSpaceId} != ${previousSpaceId}",
+      "Value": "",
+      "Description": "New Space detected"
+    },
+    {
+      "Command": "if",
+      "Target": "${previousSpaceId} != \"\"",
+      "Value": "",
+      "Description": "Not first space - save previous"
+    },
+    {
+      "Command": "echo",
+      "Target": "Saving Space: ${previousSpaceId}",
+      "Value": "green",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPSpace-manage-component---view--buttonSave-content",
+      "Value": "",
+      "Description": "Click Save button"
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": "Wait for save to complete - CHANGED: moved to Value"
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End save check"
+    },
+    {
+      "Command": "comment",
+      "Target": "--- Navigate to New Space (MOVED INSIDE IF) ---",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${Fiori_Launchpad_URL}#FLPSpace-manage&/view/${currentSpaceId}",
+      "Value": "spaceUrl",
+      "Description": "Build Space URL"
+    },
+    {
+      "Command": "echo",
+      "Target": "Opening Space: ${currentSpaceId}",
+      "Value": "blue",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "${spaceUrl}",
+      "Value": "",
+      "Description": "Navigate to Space - ONLY when space changes"
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": "Wait for page load - CHANGED: moved to Value"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*[@id=\"__filter0-text\"]/span",
+      "Value": "",
+      "Targets": [
+        "xpath=//*[@id=\"__filter0-text\"]/span",
+        "xpath=//div[4]/div/div/span",
+        "css=#__filter0-text > span"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "true",
+      "Value": "!statusOK",
+      "Description": ""
+    },
+    {
+      "Command": "verifyElementPresent",
+      "Target": "xpath=//table[contains(@id,'assignedTransportTable')]//span[normalize-space()='${TR_Desc}']",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "if",
+      "Target": "${!statusOK} == false",
+      "Value": "",
+      "Description": "Checks if transport is already assigned"
+    },
+    {
+      "Command": "click",
+      "Target": "id=__component2---assignedTransport--assignedTransportOverflowToolbarAssignButton-BDI-content",
+      "Value": "",
+      "Targets": [
+        "id=__component2---assignedTransport--assignedTransportOverflowToolbarAssignButton-BDI-content",
+        "xpath=//*[@id=\"__component2---assignedTransport--assignedTransportOverflowToolbarAssignButton-BDI-content\"]",
+        "xpath=//bdi[@id='__component2---assignedTransport--assignedTransportOverflowToolbarAssignButton-BDI-content']",
+        "xpath=//div[2]/div/div/div/div/button/span/span/bdi",
+        "css=#__component2---assignedTransport--assignedTransportOverflowToolbarAssignButton-BDI-content"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "1",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=__component2---app-transport--transportComboBox-inner",
+      "Value": "${TR_Desc}",
+      "Targets": [
+        "id=__component2---app-transport--transportComboBox-inner",
+        "xpath=//*[@id=\"__component2---app-transport--transportComboBox-inner\"]",
+        "xpath=//input[@id='__component2---app-transport--transportComboBox-inner']",
+        "xpath=//input",
+        "css=#__component2---app-transport--transportComboBox-inner"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//li[@role='option' and .//span[normalize-space()='${TR_Desc}']]",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "10",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "id=__component2---assignedTransport--transportAssignDialog--transportDialogSaveButton-BDI-content",
+      "Value": "",
+      "Targets": [
+        "id=__component2---assignedTransport--transportAssignDialog--transportDialogSaveButton-BDI-content",
+        "xpath=//*[@id=\"__component2---assignedTransport--transportAssignDialog--transportDialogSaveButton-BDI-content\"]",
+        "xpath=//bdi[@id='__component2---assignedTransport--transportAssignDialog--transportDialogSaveButton-BDI-content']",
+        "xpath=//span/span/bdi",
+        "css=#__component2---assignedTransport--transportAssignDialog--transportDialogSaveButton-BDI-content"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End transport exist check"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*[@id=\"application-FLPSpace-manage-component---view--tabPages-text\"]/span",
+      "Value": "",
+      "Targets": [
+        "xpath=//*[@id=\"application-FLPSpace-manage-component---view--tabPages-text\"]/span",
+        "xpath=//div[2]/div/div/span",
+        "css=#application-FLPSpace-manage-component---view--tabPages-text > span"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "--- Click Edit Button ---",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPSpace-manage-component---view--buttonEdit-BDI-content",
+      "Value": "",
+      "Description": "Click Edit button"
+    },
+    {
+      "Command": "pause",
+      "Target": "1000",
+      "Value": "",
+      "Description": "Wait for edit mode - CHANGED: moved to Value"
+    },
+    {
+      "Command": "store",
+      "Target": "${currentSpaceId}",
+      "Value": "previousSpaceId",
+      "Description": "Update previous Space ID"
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End space change check"
+    },
+    {
+      "Command": "comment",
+      "Target": "=== ADD PAGE ===",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Adding Page: ${currentPageId} to Space: ${currentSpaceId}",
+      "Value": "green",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPSpace-manage-component---view--pageSelectorSearchField-reset",
+      "Value": "",
+      "Description": "Clear search field"
+    },
+    {
+      "Command": "pause",
+      "Target": "300",
+      "Value": "",
+      "Description": "Wait after clear - CHANGED: moved to Value"
+    },
+    {
+      "Command": "type",
+      "Target": "id=application-FLPSpace-manage-component---view--pageSelectorSearchField-I",
+      "Value": "${currentPageId}",
+      "Description": "Type Page ID"
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPSpace-manage-component---view--pageSelectorSearchField-search",
+      "Value": "",
+      "Description": "Click Search"
+    },
+    {
+      "Command": "comment",
+      "Target": "\"--- Check if page is available before clicking Add ---\"",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=(//li[.//span[contains(@id,'pageSelectorItemTitle') and contains(@id,'-inner') and normalize-space(.)='${currentPageId}']])[1]",
+      "Value": "exactPageFound",
+      "Description": ""
+    },
+    {
+      "Command": "if",
+      "Target": "${exactPageFound} != \"#LNF\"",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "1000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//li[.//span[contains(@id,'pageSelectorItemTitle') and contains(@id,'-inner') and normalize-space(.)='${currentPageId}']]//bdi[normalize-space(.)='Add']",
+      "Value": "",
+      "Description": "Add Button Clicked"
+    },
+    {
+      "Command": "echo",
+      "Target": "✓ Page ${currentPageId} added successfully",
+      "Value": "green",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${currentSpaceId}",
+      "Value": "!csvLine",
+      "Description": "Space ID for output"
+    },
+    {
+      "Command": "store",
+      "Target": "${currentPageId}",
+      "Value": "!csvLine",
+      "Description": "Page ID for output"
+    },
+    {
+      "Command": "store",
+      "Target": "Success",
+      "Value": "!csvLine",
+      "Description": "Status: Success"
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${outputFileName}",
+      "Value": "",
+      "Description": "Write success row"
+    },
+    {
+      "Command": "else",
+      "Target": "",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "⚠ skipped: ${currentPageId}",
+      "Value": "orange",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${currentSpaceId}",
+      "Value": "!csvLine",
+      "Description": "Space ID for output"
+    },
+    {
+      "Command": "store",
+      "Target": "${currentPageId}",
+      "Value": "!csvLine",
+      "Description": "Page ID for output"
+    },
+    {
+      "Command": "store",
+      "Target": "true",
+      "Value": "!statusOK",
+      "Description": ""
+    },
+    {
+      "Command": "verifyElementPresent",
+      "Target": "xpath=//*[contains(@id,'cellPageId') and contains(@id,'pagesTable') and text()='${currentPageId}']",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "if",
+      "Target": "${!statusOK} == true",
+      "Value": "",
+      "Description": "Page Id exist in Space"
+    },
+    {
+      "Command": "store",
+      "Target": "Already Added",
+      "Value": "!csvLine",
+      "Description": "Status: Already Added"
+    },
+    {
+      "Command": "echo",
+      "Target": "⚠ page already be added ${currentSpaceId} ${currentPageId} - Row ${!csvReadLineNumber}",
+      "Value": "orange",
+      "Description": ""
+    },
+    {
+      "Command": "else",
+      "Target": "",
+      "Value": "",
+      "Description": "Add button was NOT found"
+    },
+    {
+      "Command": "store",
+      "Target": "Page Not Found",
+      "Value": "!csvLine",
+      "Description": "Status: Page Not Found"
+    },
+    {
+      "Command": "echo",
+      "Target": "⚠ page unavailable ${currentSpaceId} ${currentPageId} - Row ${!csvReadLineNumber}",
+      "Value": "orange",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End page exists check"
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${outputFileName}",
+      "Value": "",
+      "Description": "Write failed row"
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End add check"
+    },
+    {
+      "Command": "comment",
+      "Target": "--- Increment Row ---",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript",
+      "Target": "return ${currentRow} + 1",
+      "Value": "currentRow",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End While loop"
+    },
+    {
+      "Command": "comment",
+      "Target": "=== FINAL SAVE ===",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Saving final Space: ${previousSpaceId}",
+      "Value": "blue",
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": "Wait before final save - CHANGED: moved to Value"
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPSpace-manage-component---view--buttonSave-content",
+      "Value": "",
+      "Description": "Click Save button"
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": "Wait for save completion - CHANGED: moved to Value"
+    },
+    {
+      "Command": "echo",
+      "Target": "✓ Process completed! Results saved to PageAddToSpace_Results.csv",
+      "Value": "green",
+      "Description": ""
+    }
+  ]
+}

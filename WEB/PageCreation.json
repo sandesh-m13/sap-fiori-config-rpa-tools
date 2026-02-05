@@ -1,0 +1,306 @@
+{
+  "Name": "PageCreation",
+  "CreationDate": "2026-2-4",
+  "Commands": [
+    {
+      "Command": "store",
+      "Target": "https://_YOUR_WEB_DISPATHER_URL?sap-client=100&sap-language=EN",
+      "Value": "Fiori_Launchpad_URL",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "DNT_FIORI_PAGE_BUILD.",
+      "Value": "TR_Desc",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "${Fiori_Launchpad_URL}#FLPPage-manage",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "csvRead",
+      "Target": "pages.csv",
+      "Value": "",
+      "Description": "Load CSV file"
+    },
+    {
+      "Command": "executeScript",
+      "Target": "return Number(1)",
+      "Value": "currentRow",
+      "Description": "Load CSV file"
+    },
+    {
+      "Command": "store",
+      "Target": "Page ID",
+      "Value": "!csvLine",
+      "Description": "Header: Space ID"
+    },
+    {
+      "Command": "store",
+      "Target": "Page Title",
+      "Value": "!csvLine",
+      "Description": "Header: Space Title"
+    },
+    {
+      "Command": "store",
+      "Target": "Status",
+      "Value": "!csvLine",
+      "Description": "Header: Status"
+    },
+    {
+      "Command": "csvSave",
+      "Target": "Page_Creation_Result.csv",
+      "Value": "",
+      "Description": "Create output CSV with headers"
+    },
+    {
+      "Command": "while",
+      "Target": "${currentRow} <= ${!CSVREADMAXROW}",
+      "Value": "currentRow",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${currentRow}",
+      "Value": "!CSVREADLINENUMBER",
+      "Description": ""
+    },
+    {
+      "Command": "csvRead",
+      "Target": "pages.csv",
+      "Value": "!CSVREADLINENUMBER",
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "1000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-I",
+      "Value": "${!COL1}",
+      "Targets": [
+        "id=application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-I",
+        "xpath=//*[@id=\"application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-I\"]",
+        "xpath=//input[@id='application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-I']",
+        "xpath=//input",
+        "css=#application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-I"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-search",
+      "Value": "",
+      "Targets": [
+        "id=application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-search",
+        "xpath=//*[@id=\"application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-search\"]",
+        "xpath=//div[@id='application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-search']",
+        "xpath=//form/div[2]",
+        "css=#application-FLPPage-manage-component---pageOverview--customerCreatedSearchField-search"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "true",
+      "Value": "!statusOK",
+      "Description": ""
+    },
+    {
+      "Command": "verifyElementPresent",
+      "Target": "xpath=//span[contains(@id,'customerCreatedObjectIdentifierPageId') and contains(@id,'pageOverview') and normalize-space(text())='${!COL1}']",
+      "Value": "",
+      "Description": "Check if Page ID already exists."
+    },
+    {
+      "Command": "store",
+      "Target": "${!COL1}",
+      "Value": "!csvLine",
+      "Description": "Header: Page ID"
+    },
+    {
+      "Command": "store",
+      "Target": "${!COL2}",
+      "Value": "!csvLine",
+      "Description": "Header: Page Title"
+    },
+    {
+      "Command": "if",
+      "Target": "${!statusOK} == true",
+      "Value": "",
+      "Description": "If Page already exists"
+    },
+    {
+      "Command": "echo",
+      "Target": "Page: ${!COL1} already exists",
+      "Value": "Orange",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "Already Exist",
+      "Value": "!csvLine",
+      "Description": "Header: Status"
+    },
+    {
+      "Command": "else",
+      "Target": "",
+      "Value": "",
+      "Description": "If Page ID does not exist"
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPPage-manage-component---pageOverview--customerCreatedAddButton-BDI-content",
+      "Value": "",
+      "Targets": [
+        "id=application-FLPPage-manage-component---pageOverview--customerCreatedAddButton-BDI-content",
+        "xpath=//*[@id=\"application-FLPPage-manage-component---pageOverview--customerCreatedAddButton-BDI-content\"]",
+        "xpath=//bdi[@id='application-FLPPage-manage-component---pageOverview--customerCreatedAddButton-BDI-content']",
+        "xpath=//bdi",
+        "css=#application-FLPPage-manage-component---pageOverview--customerCreatedAddButton-BDI-content"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "1000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=application-FLPPage-manage-component---pageComposer--createPageIdInput-inner",
+      "Value": "${!COL1}",
+      "Targets": [
+        "id=application-FLPPage-manage-component---pageComposer--createPageIdInput-inner",
+        "xpath=//*[@id=\"application-FLPPage-manage-component---pageComposer--createPageIdInput-inner\"]",
+        "xpath=//input[@id='application-FLPPage-manage-component---pageComposer--createPageIdInput-inner']",
+        "xpath=//input",
+        "css=#application-FLPPage-manage-component---pageComposer--createPageIdInput-inner"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=application-FLPPage-manage-component---pageComposer--createPageDescriptionInput-inner",
+      "Value": "${!COL2}",
+      "Targets": [
+        "id=application-FLPPage-manage-component---pageComposer--createPageDescriptionInput-inner",
+        "xpath=//*[@id=\"application-FLPPage-manage-component---pageComposer--createPageDescriptionInput-inner\"]",
+        "xpath=//input[@id='application-FLPPage-manage-component---pageComposer--createPageDescriptionInput-inner']",
+        "xpath=//div[4]/div/div/input",
+        "css=#application-FLPPage-manage-component---pageComposer--createPageDescriptionInput-inner"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=application-FLPPage-manage-component---pageComposer--createPageTitleInput-inner",
+      "Value": "${!COL2}",
+      "Targets": [
+        "id=application-FLPPage-manage-component---pageComposer--createPageTitleInput-inner",
+        "xpath=//*[@id=\"application-FLPPage-manage-component---pageComposer--createPageTitleInput-inner\"]",
+        "xpath=//input[@id='application-FLPPage-manage-component---pageComposer--createPageTitleInput-inner']",
+        "xpath=//div[6]/div/div/input",
+        "css=#application-FLPPage-manage-component---pageComposer--createPageTitleInput-inner"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "xpath=//div[2]/div/div/div/div/div/div/div[2]/div/div/input",
+      "Value": "${TR_Desc}",
+      "Targets": [
+        "id=__component14---app-transport--transportComboBox-inner",
+        "xpath=//*[@id=\"__component14---app-transport--transportComboBox-inner\"]",
+        "xpath=//input[@id='__component14---app-transport--transportComboBox-inner']",
+        "xpath=//div[2]/div/div/div/div/div/div/div[2]/div/div/input",
+        "css=#__component14---app-transport--transportComboBox-inner"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//li/div/div/div/span/span",
+      "Value": "",
+      "Targets": [
+        "xpath=//*[@id=\"__item11-titleText\"]/span",
+        "xpath=//li/div/div/div/span/span",
+        "css=#__item11-titleText > span"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPPage-manage-component---pageComposer--createPageSaveButton-BDI-content",
+      "Value": "",
+      "Targets": [
+        "id=application-FLPPage-manage-component---pageComposer--createPageSaveButton-BDI-content",
+        "xpath=//*[@id=\"application-FLPPage-manage-component---pageComposer--createPageSaveButton-BDI-content\"]",
+        "xpath=//bdi[@id='application-FLPPage-manage-component---pageComposer--createPageSaveButton-BDI-content']",
+        "xpath=//span/span/bdi",
+        "css=#application-FLPPage-manage-component---pageComposer--createPageSaveButton-BDI-content"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "New Page Created",
+      "Value": "!csvLine",
+      "Description": "Header: Status"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*[@id=\"backBtn\"]/span",
+      "Value": "",
+      "Targets": [
+        "xpath=//*[@id=\"backBtn\"]/span",
+        "xpath=//a/span",
+        "css=#backBtn > span"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End save check"
+    },
+    {
+      "Command": "csvSave",
+      "Target": "Page_Creation_Result.csv",
+      "Value": "",
+      "Description": "Create output CSV with headers"
+    },
+    {
+      "Command": "executeScript",
+      "Target": "return ${currentRow} + 1",
+      "Value": "currentRow",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": ""
+    }
+  ]
+}

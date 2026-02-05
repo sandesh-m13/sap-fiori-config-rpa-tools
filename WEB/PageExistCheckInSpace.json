@@ -1,0 +1,204 @@
+{
+  "Name": "PageExistInSpace",
+  "CreationDate": "2026-2-4",
+  "Commands": [
+	{
+      "Command": "store",
+      "Target": "https://_YOUR_WEB_DISPATHER_URL?sap-client=100&sap-language=EN",
+      "Value": "Fiori_Launchpad_URL",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "ZHGOTC_OC_SP_TEMP",
+      "Value": "spaceId",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "${Fiori_Launchpad_URL}#FLPSpace-manage&/view/${spaceId}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "csvRead",
+      "Target": "pages.csv",
+      "Value": "",
+      "Description": "Load CSV file once"
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return 1;",
+      "Value": "currentRow",
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "while",
+      "Target": "${currentRow} <= ${!CSVREADMAXROW}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${currentRow}",
+      "Value": "!CSVREADLINENUMBER",
+      "Description": ""
+    },
+    {
+      "Command": "csvRead",
+      "Target": "pages.csv",
+      "Value": "",
+      "Description": "Read current row"
+    },
+    {
+      "Command": "store",
+      "Target": "${!col1}",
+      "Value": "currentPageId",
+      "Description": ""
+    },
+    {
+      "Command": "storeXpathCount",
+      "Target": "xpath=//*[contains(@id,'cellPageId') and contains(@id,'pagesTable') and normalize-space(text())='${currentPageId}']",
+      "Value": "matchCount",
+      "Description": ""
+    },
+    {
+      "Command": "if",
+      "Target": "${matchCount} > 0",
+      "Value": "",
+      "Description": "Page ID exists in Space"
+    },
+    {
+      "Command": "echo",
+      "Target": "⚠ page already added ${currentPageId} - Row ${!CSVREADLINENUMBER}",
+      "Value": "orange",
+      "Description": ""
+    },
+    {
+      "Command": "else",
+      "Target": "",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "⚠ page is not added in space ${currentPageId} - Row ${!CSVREADLINENUMBER}",
+      "Value": "orange",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number(${currentRow}) + 1;",
+      "Value": "currentRow",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End While loop"
+    },
+    {
+      "Command": "pause",
+      "Target": "",
+      "Value": "100",
+      "Description": "start scraping"
+    },
+    {
+      "Command": "store",
+      "Target": "FAST",
+      "Value": "!REPLAYSPEED",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "",
+      "Value": "lastSaved",
+      "Description": ""
+    },
+    {
+      "Command": "storeXpathCount",
+      "Target": "xpath=//*[contains(@id,'pagesTable')]//*[contains(@id,'cellPageId')]",
+      "Value": "rowCount",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Total Page ID rows found = ${rowCount}",
+      "Value": "blue",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return 1;",
+      "Value": "i",
+      "Description": ""
+    },
+    {
+      "Command": "while",
+      "Target": "${i} <= ${rowCount}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=(//*[contains(@id,'pagesTable')]//*[contains(@id,'cellPageId')])[${i}]",
+      "Value": "pageId",
+      "Description": ""
+    },
+    {
+      "Command": "if",
+      "Target": "${pageId} != \"#LNF\" && ${pageId} != ${lastSaved}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${pageId}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "ScrapedPageIds.csv",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${pageId}",
+      "Value": "lastSaved",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "Scraped unique Page IDs"
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number(${i}) + 1;",
+      "Value": "i",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End scrape loop"
+    }
+  ]
+}

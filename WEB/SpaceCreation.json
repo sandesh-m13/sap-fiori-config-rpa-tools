@@ -1,0 +1,325 @@
+{
+  "Name": "SpaceCreation",
+  "CreationDate": "2026-2-4",
+  "Commands": [
+    {
+      "Command": "store",
+      "Target": "https://_YOUR_WEB_DISPATHER_URL?sap-client=100&sap-language=EN",
+      "Value": "Fiori_Launchpad_URL",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "DNT_FIORI_PAGE_BUILD.",
+      "Value": "TR_Desc",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "${Fiori_Launchpad_URL}#FLPSpace-manage",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "csvRead",
+      "Target": "spaces.csv",
+      "Value": "",
+      "Description": "Load CSV file"
+    },
+    {
+      "Command": "executeScript",
+      "Target": "return Number(1)",
+      "Value": "currentRow",
+      "Description": "Load CSV file"
+    },
+    {
+      "Command": "store",
+      "Target": "Space ID",
+      "Value": "!csvLine",
+      "Description": "Header: Space ID"
+    },
+    {
+      "Command": "store",
+      "Target": "Space Title",
+      "Value": "!csvLine",
+      "Description": "Header: Space Title"
+    },
+    {
+      "Command": "store",
+      "Target": "Status",
+      "Value": "!csvLine",
+      "Description": "Header: Status"
+    },
+    {
+      "Command": "csvSave",
+      "Target": "Space_Creation_Result.csv",
+      "Value": "",
+      "Description": "Create output CSV with headers"
+    },
+    {
+      "Command": "while",
+      "Target": "${currentRow} <= ${!CSVREADMAXROW}",
+      "Value": "currentRow",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${currentRow}",
+      "Value": "!CSVREADLINENUMBER",
+      "Description": ""
+    },
+    {
+      "Command": "csvRead",
+      "Target": "spaces.csv",
+      "Value": "!CSVREADLINENUMBER",
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "1000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=application-FLPSpace-manage-component---spaceOverview--customerSearchField-I",
+      "Value": "${!COL1}",
+      "Targets": [
+        "id=application-FLPSpace-manage-component---spaceOverview--customerSearchField-I",
+        "xpath=//*[@id=\"application-FLPSpace-manage-component---spaceOverview--customerSearchField-I\"]",
+        "xpath=//input[@id='application-FLPSpace-manage-component---spaceOverview--customerSearchField-I']",
+        "xpath=//form/input",
+        "css=#application-FLPSpace-manage-component---spaceOverview--customerSearchField-I"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPSpace-manage-component---spaceOverview--customerSearchField-search",
+      "Value": "",
+      "Targets": [
+        "id=application-FLPSpace-manage-component---spaceOverview--customerSearchField-search",
+        "xpath=//*[@id=\"application-FLPSpace-manage-component---spaceOverview--customerSearchField-search\"]",
+        "xpath=//div[@id='application-FLPSpace-manage-component---spaceOverview--customerSearchField-search']",
+        "xpath=//form/div[2]",
+        "css=#application-FLPSpace-manage-component---spaceOverview--customerSearchField-search"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "true",
+      "Value": "!statusOK",
+      "Description": ""
+    },
+    {
+      "Command": "verifyElementPresent",
+      "Target": "xpath=//span[contains(@id,'customerCellSpaceId') and contains(@id,'spaceOverview') and text()='${!COL1}']",
+      "Value": "",
+      "Description": "Check if Space id already exists."
+    },
+    {
+      "Command": "store",
+      "Target": "${!COL1}",
+      "Value": "!csvLine",
+      "Description": "Header: Space ID"
+    },
+    {
+      "Command": "store",
+      "Target": "${!COL2}",
+      "Value": "!csvLine",
+      "Description": "Header: Space Title"
+    },
+    {
+      "Command": "if",
+      "Target": "${!statusOK} == true",
+      "Value": "",
+      "Description": "If Space already exists"
+    },
+    {
+      "Command": "echo",
+      "Target": "Space: ${!COL1} already exists",
+      "Value": "Orange",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "Already Exist",
+      "Value": "!csvLine",
+      "Description": "Header: Status"
+    },
+    {
+      "Command": "comment",
+      "Target": "csvSave // Space_Creation_Result.csv",
+      "Value": "",
+      "Description": "Create output CSV with headers"
+    },
+    {
+      "Command": "else",
+      "Target": "",
+      "Value": "",
+      "Description": "If Space ID does not exist"
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPSpace-manage-component---spaceOverview--customerCreateButton-BDI-content",
+      "Value": "",
+      "Targets": [
+        "id=application-FLPSpace-manage-component---spaceOverview--customerCreateButton-BDI-content",
+        "xpath=//*[@id=\"application-FLPSpace-manage-component---spaceOverview--customerCreateButton-BDI-content\"]",
+        "xpath=//bdi[@id='application-FLPSpace-manage-component---spaceOverview--customerCreateButton-BDI-content']",
+        "xpath=//bdi",
+        "css=#application-FLPSpace-manage-component---spaceOverview--customerCreateButton-BDI-content"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceIdInput-inner",
+      "Value": "${!COL1}",
+      "Targets": [
+        "id=application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceIdInput-inner",
+        "xpath=//*[@id=\"application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceIdInput-inner\"]",
+        "xpath=//input[@id='application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceIdInput-inner']",
+        "xpath=//input",
+        "css=#application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceIdInput-inner"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceDescriptionInput-inner",
+      "Value": "${!COL2}",
+      "Targets": [
+        "id=application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceDescriptionInput-inner",
+        "xpath=//*[@id=\"application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceDescriptionInput-inner\"]",
+        "xpath=//input[@id='application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceDescriptionInput-inner']",
+        "xpath=//div[4]/div/div/input",
+        "css=#application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceDescriptionInput-inner"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceTitleInput-inner",
+      "Value": "${!COL2}",
+      "Targets": [
+        "id=application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceTitleInput-inner",
+        "xpath=//*[@id=\"application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceTitleInput-inner\"]",
+        "xpath=//input[@id='application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceTitleInput-inner']",
+        "xpath=//div[6]/div/div/input",
+        "css=#application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceTitleInput-inner"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "type",
+      "Target": "id=__component11---app-transport--transportComboBox-inner",
+      "Value": "${TR_Desc}",
+      "Targets": [
+        "id=__component11---app-transport--transportComboBox-inner",
+        "xpath=//*[@id=\"__component11---app-transport--transportComboBox-inner\"]",
+        "xpath=//input[@id='__component11---app-transport--transportComboBox-inner']",
+        "xpath=//div[2]/div/div/div/div/div/div/div[2]/div/div/input",
+        "css=#__component11---app-transport--transportComboBox-inner"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "1000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*[@id=\"__item19-titleText\"]/span",
+      "Value": "",
+      "Targets": [
+        "xpath=//*[@id=\"__item19-titleText\"]/span",
+        "xpath=//li[14]/div/div/div/span/span",
+        "css=#__item19-titleText > span"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceSaveButton-BDI-content",
+      "Value": "",
+      "Targets": [
+        "id=application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceSaveButton-BDI-content",
+        "xpath=//*[@id=\"application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceSaveButton-BDI-content\"]",
+        "xpath=//bdi[@id='application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceSaveButton-BDI-content']",
+        "xpath=//button/span/span/bdi",
+        "css=#application-FLPSpace-manage-component---spaceOverview--createDialog--createSpaceSaveButton-BDI-content"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "3000",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "id=application-FLPSpace-manage-component---view--buttonSave-BDI-content",
+      "Value": "",
+      "Targets": [
+        "id=application-FLPSpace-manage-component---view--buttonSave-BDI-content",
+        "xpath=//*[@id=\"application-FLPSpace-manage-component---view--buttonSave-BDI-content\"]",
+        "xpath=//bdi[@id='application-FLPSpace-manage-component---view--buttonSave-BDI-content']",
+        "xpath=//footer/div/button[2]/span/span/bdi",
+        "css=#application-FLPSpace-manage-component---view--buttonSave-BDI-content"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "New Space Created",
+      "Value": "!csvLine",
+      "Description": "Header: Status"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*[@id=\"backBtn\"]/span",
+      "Value": "",
+      "Targets": [
+        "xpath=//*[@id=\"backBtn\"]/span",
+        "xpath=//a/span",
+        "css=#backBtn > span"
+      ],
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "End save check"
+    },
+    {
+      "Command": "csvSave",
+      "Target": "Space_Creation_Result.csv",
+      "Value": "",
+      "Description": "Create output CSV with headers"
+    },
+    {
+      "Command": "executeScript",
+      "Target": "return ${currentRow} + 1",
+      "Value": "currentRow",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": ""
+    }
+  ]
+}

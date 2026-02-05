@@ -4,6 +4,13 @@ A small portfolio repository with ready-to-use artifacts and notes to help autom
 
 ## What’s included
 
+### `gui/`
+GUI-oriented step notes for Business catalog-related activities:
+- `CatalogCreation.txt` — steps for creating a business catalog
+- `AppAdditionToCatalog.txt` — steps for adding an app to a catalog
+
+See `gui/README.md` for context and how these steps map to your automation flow.
+
 ### `web/`
 Automation-ready JSON templates for common Fiori Launchpad (FLP) configuration tasks:
 - `SpaceCreation.json` — create a Space
@@ -11,13 +18,6 @@ Automation-ready JSON templates for common Fiori Launchpad (FLP) configuration t
 - `PageAdditionToSpace.json` — assign/add a Page to a Space
 
 See `web/README.md` for usage notes and any prerequisites.
-
-### `gui/`
-GUI-oriented step notes for Business catalog-related activities:
-- `CatalogCreation.txt` — steps for creating a business catalog
-- `AppAdditionToCatalog.txt` — steps for adding an app to a catalog
-
-See `gui/README.md` for context and how these steps map to your automation flow.
 
 ## Repository structure
 

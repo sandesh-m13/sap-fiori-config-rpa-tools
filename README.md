@@ -20,7 +20,7 @@ Automation-ready JSON templates for common Fiori Launchpad (FLP) configuration t
 See `web/README.md` for usage notes and any prerequisites.
 
 ## Repository structure
-
+```text
 sap-fiori-config-rpa-tools/
 ├─ README.md
 ├─ gui/
@@ -32,3 +32,4 @@ sap-fiori-config-rpa-tools/
    ├─ SpaceCreation.json
    ├─ PageCreation.json
    └─ PageAdditionToSpace.json
+
